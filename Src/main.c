@@ -84,7 +84,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	char msg[] = "Hello, World!\n";
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -93,7 +93,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  HAL_GPIO_WritePin(USB_PowerSwitchOn_GPIO_Port, USB_PowerSwitchOn_Pin, GPIO_PIN_SET);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -120,6 +120,12 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
 
+	  HAL_GPIO_TogglePin(LED_Red_GPIO_Port, LED_Red_Pin);
+	  HAL_Delay(250);
+	  HAL_GPIO_TogglePin(LED_Red_GPIO_Port, LED_Red_Pin);
+	  HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
+	  HAL_Delay(250);
+	  CDC_Transmit_FS(msg, 14);
   }
   /* USER CODE END 3 */
 
