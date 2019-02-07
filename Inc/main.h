@@ -63,8 +63,8 @@
 #define PBtn_GPIO_Port GPIOC
 #define MCO_Pin GPIO_PIN_0
 #define MCO_GPIO_Port GPIOH
-#define LEDRed_Pin GPIO_PIN_14
-#define LEDRed_GPIO_Port GPIOB
+#define LED_Red_Pin GPIO_PIN_14
+#define LED_Red_GPIO_Port GPIOB
 #define STLK_RX_Pin GPIO_PIN_8
 #define STLK_RX_GPIO_Port GPIOD
 #define STLK_TX_Pin GPIO_PIN_9
@@ -73,8 +73,8 @@
 #define USB_PowerSwitchOn_GPIO_Port GPIOG
 #define USB_OverCurrent_Pin GPIO_PIN_7
 #define USB_OverCurrent_GPIO_Port GPIOG
-#define LEDGreen_Pin GPIO_PIN_9
-#define LEDGreen_GPIO_Port GPIOC
+#define LED_Green_Pin GPIO_PIN_9
+#define LED_Green_GPIO_Port GPIOC
 #define USB_DM_Pin GPIO_PIN_11
 #define USB_DM_GPIO_Port GPIOA
 #define USB_DP_Pin GPIO_PIN_12
@@ -85,8 +85,8 @@
 #define TCK_GPIO_Port GPIOA
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
-#define LEDBlue_Pin GPIO_PIN_7
-#define LEDBlue_GPIO_Port GPIOB
+#define LED_Blue_Pin GPIO_PIN_7
+#define LED_Blue_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**

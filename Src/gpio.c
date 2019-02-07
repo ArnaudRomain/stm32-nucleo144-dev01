@@ -81,13 +81,13 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LEDRed_Pin|LEDBlue_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, LED_Red_Pin|LED_Blue_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(USB_PowerSwitchOn_GPIO_Port, USB_PowerSwitchOn_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LEDGreen_GPIO_Port, LEDGreen_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_Green_GPIO_Port, LED_Green_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = PBtn_Pin;
@@ -96,7 +96,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(PBtn_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin */
-  GPIO_InitStruct.Pin = LEDRed_Pin|LEDBlue_Pin;
+  GPIO_InitStruct.Pin = LED_Red_Pin|LED_Blue_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -116,11 +116,11 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(USB_OverCurrent_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = LEDGreen_Pin;
+  GPIO_InitStruct.Pin = LED_Green_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LEDGreen_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(LED_Green_GPIO_Port, &GPIO_InitStruct);
 
 }
 
