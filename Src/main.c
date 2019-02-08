@@ -56,6 +56,8 @@
 
 /* USER CODE BEGIN Includes */
 #include "usbd_cdc_if.h"
+#include "cli.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -74,6 +76,9 @@ void SystemClock_Config(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+void cmd_detect_umd(){
+	CDC_Transmit_FS((uint8_t*)"UMDv2\n", 6);
+}
 
 /* USER CODE END 0 */
 
@@ -85,8 +90,9 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	int txlen;
-	uint8_t txdata[512];
+	int rxlen;
+	uint8_t rxdata[128];
+	char cmd[128];
   /* USER CODE END 1 */
 
   /* MCU Configuration---------------------------------------------------------*/
@@ -103,6 +109,7 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
 
+  cli_register_cmd("detect", &cmd_detect_umd );
 
   /* USER CODE END SysInit */
 
@@ -123,18 +130,21 @@ int main(void)
   /* USER CODE END WHILE */
 	  HAL_GPIO_TogglePin(LED_Red_GPIO_Port, LED_Red_Pin);
   /* USER CODE BEGIN 3 */
-	  txlen = 0;
+	  rxlen = 0;
 
 	  // check for USB data rx
 	  if( usbbuf.inptr != usbbuf.outptr ){
-		  txlen = 0;
+		  rxlen = 0;
 		  while( usbbuf.inptr != usbbuf.outptr ){
-			  txdata[txlen++] = usbbuf.data.byte[usbbuf.outptr++];
+			  rxdata[rxlen++] = usbbuf.data.byte[usbbuf.outptr++];
 			  if( usbbuf.outptr >= USB_BUFFER_SIZE ){
 				  usbbuf.outptr = 0;
 			  }
 		  }
-		  CDC_Transmit_FS(txdata, txlen);
+
+		  //CDC_Transmit_FS(txdata, txlen);  // loopback data
+		  strncpy(cmd, (char*)rxdata, rxlen);
+		  cli_parse_input(cmd);
 	  }
   }
   /* USER CODE END 3 */
