@@ -133,12 +133,12 @@ int main(void)
 	  rxlen = 0;
 
 	  // check for USB data rx
-	  if( usbbuf.inptr != usbbuf.outptr ){
+	  if( usbbuf.head != usbbuf.tail ){
 		  rxlen = 0;
-		  while( usbbuf.inptr != usbbuf.outptr ){
-			  rxdata[rxlen++] = usbbuf.data.byte[usbbuf.outptr++];
-			  if( usbbuf.outptr >= USB_BUFFER_SIZE ){
-				  usbbuf.outptr = 0;
+		  while( usbbuf.tail != usbbuf.head ){
+			  rxdata[rxlen++] = usbbuf.data.byte[usbbuf.head++];
+			  if( usbbuf.head >= USB_BUFFER_SIZE ){
+				  usbbuf.head = 0;
 			  }
 		  }
 

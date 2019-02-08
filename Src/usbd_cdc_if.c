@@ -188,9 +188,10 @@ static int8_t CDC_Init_FS(void)
 	for(i=0; i<(USB_BUFFER_SIZE/2); i++){
 		usbbuf.data.word[i] = 0;
 	}
-	usbbuf.inptr = 0;
-	usbbuf.outptr = 0;
-	usbbuf.overflow = 0;
+	usbbuf.tail = 0;
+	usbbuf.head = 0;
+	usbbuf.status = 0;
+	usbbuf.packets = 0;
 
   /* Set Application Buffers */
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
@@ -304,20 +305,20 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 	int i;
 	uint8_t* rxbuf = Buf;
 
+	//count total packets for application runtime
+	usbbuf.packets++;
+
 	// receive the data
 	for(i=0; i<(*Len); i++){
 
-		//copy into usbbuf
-		usbbuf.data.byte[usbbuf.inptr++] = *(rxbuf++);
-
-		//wrap around
-		if( usbbuf.inptr >= USB_BUFFER_SIZE ){
-			usbbuf.inptr = 0;
-		}
-
-		//check for overflow
-		if( usbbuf.inptr == usbbuf.outptr ){
-			usbbuf.overflow = 1;
+		//is the buffer full?
+		if( usbbuf.head == ( usbbuf.tail % USB_BUFFER_SIZE ) + 1 ){
+			usbbuf.status = 1;
+		}else{
+			//copy into usbbuf byte buffer
+			usbbuf.data.byte[usbbuf.tail++] = *(rxbuf++);
+			//wrap around
+			usbbuf.tail = usbbuf.tail % USB_BUFFER_SIZE;
 		}
 	}
 
