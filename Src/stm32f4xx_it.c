@@ -199,11 +199,17 @@ void SysTick_Handler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
-
+  static int count;
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
-  HAL_GPIO_TogglePin(LED_Red_GPIO_Port, LED_Red_Pin);
+
+  count++;
+  if( count >= 2 ){
+	  count = 0;
+	  //HAL_GPIO_TogglePin(LED_Red_GPIO_Port, LED_Red_Pin);
+	  //CDC_Transmit_FS("Red toggle\n", 11);
+  }
   HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
   /* USER CODE END TIM3_IRQn 1 */
 }

@@ -55,14 +55,14 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "usbd_cdc_if.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+//extern struct usbbuf;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -85,10 +85,11 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	char msg[] = "Hello, World!\n";
+	int txlen;
+	uint8_t txdata[512];
   /* USER CODE END 1 */
 
-  /* MCU Configuration----------------------------------------------------------*/
+  /* MCU Configuration---------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
@@ -101,6 +102,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+
 
   /* USER CODE END SysInit */
 
@@ -117,17 +119,23 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+	  HAL_Delay(500);
   /* USER CODE END WHILE */
-
+	  HAL_GPIO_TogglePin(LED_Red_GPIO_Port, LED_Red_Pin);
   /* USER CODE BEGIN 3 */
+	  txlen = 0;
 
-//	  HAL_GPIO_TogglePin(LED_Red_GPIO_Port, LED_Red_Pin);
-//	  HAL_Delay(250);
-//	  HAL_GPIO_TogglePin(LED_Red_GPIO_Port, LED_Red_Pin);
-//	  HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
-//	  HAL_Delay(250);
-//	  CDC_Transmit_FS(msg, 14);
+	  // check for USB data rx
+	  if( usbbuf.inptr != usbbuf.outptr ){
+		  txlen = 0;
+		  while( usbbuf.inptr != usbbuf.outptr ){
+			  txdata[txlen++] = usbbuf.data.byte[usbbuf.outptr++];
+			  if( usbbuf.outptr >= USB_BUFFER_SIZE ){
+				  usbbuf.outptr = 0;
+			  }
+		  }
+		  CDC_Transmit_FS(txdata, txlen);
+	  }
   }
   /* USER CODE END 3 */
 

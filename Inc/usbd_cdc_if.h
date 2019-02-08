@@ -119,7 +119,16 @@
 extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
-
+#define USB_BUFFER_SIZE		1024
+struct __usbbuf{
+	union __databuff{
+		uint8_t		byte[USB_BUFFER_SIZE];     ///< byte access within dataBuffer
+		uint16_t    word[USB_BUFFER_SIZE/2];   ///< word access within dataBuffer
+	} data;
+	uint16_t	inptr;
+	uint16_t	outptr;
+	uint8_t		overflow;
+} usbbuf;
 /* USER CODE END EXPORTED_VARIABLES */
 
 /**
